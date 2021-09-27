@@ -4,12 +4,12 @@ from rest_framework import status, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .serializers import MyTokenObtainPairSerializer, CustomUserSerializer
+from .serializers import ExtendedTokenObtainPairSerializer, CustomUserSerializer
 
 
-class ObtainTokenPairWithTeamView(TokenObtainPairView):
+class ObtainTokenPairWithPhoneView(TokenObtainPairView):
     permission_classes = (permissions.AllowAny,)
-    serializer_class = MyTokenObtainPairSerializer
+    serializer_class = ExtendedTokenObtainPairSerializer
 
 class CustomUserCreate(APIView):
     permission_classes = (permissions.AllowAny,)
