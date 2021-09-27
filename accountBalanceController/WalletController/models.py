@@ -7,7 +7,6 @@ import random
 # Create your models here.
 
 class BaseEntity(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
     create_datetime = models.DateTimeField(auto_now_add=True)
     modify_datetime = models.DateTimeField(auto_now=True)
 
@@ -37,12 +36,13 @@ class Transaction(BaseEntity):
         ('USER_2_USER_OUTCOME', 'USER_2_USER_OUTCOME'),
         ('USER_2_USER_INCOME', 'SERVICE_INCOME'),
     )
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
     amount = models.DecimalField(_('Amount of transaction'), max_digits=10, decimal_places=2)
-    transaction_from = models.CharField(_('Transaction action from - wallet id,merchant,service'), max_length=50, blank=False, null=False)
-    transaction_to = models.CharField(_('Transaction action from - wallet id,merchant,service'), max_length=50, blank=False, null=False)
+    transaction_from = models.CharField(_('Transaction action from - wallet id,merchant,service'), max_length=50, blank=False, null=True)
+    transaction_to = models.CharField(_('Transaction action from - wallet id,merchant,service'), max_length=50, blank=False, null=True)
     transaction_type = models.CharField(_('Transaction Type'), max_length=20, choices=TRNSACTION_TYPE, blank=False)
 
-    wallets = models.ManyToManyField(Wallet, verbose_name=_('Wallet'), blank=False, null=False, related_name='transactions')
+    wallets = models.ManyToManyField(Wallet, verbose_name=_('Wallet'), blank=False, related_name='transactions')
 
     class Meta:
         verbose_name = 'Transaction'
