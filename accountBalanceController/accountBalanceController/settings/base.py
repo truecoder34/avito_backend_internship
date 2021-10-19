@@ -19,13 +19,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
+# SPECIFIED IN CONFIG
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '(1fuqc3eo6ec$t%5ylx&nl**zc#)*ww1qs3$ovb6^g4ofe!zy='
-
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
+# DEVELOPMENT = True
 
-ALLOWED_HOSTS = []
+#### TRUE need for production server; FALSE for development
 
 
 # Application definition
@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'WalletController.apps.WalletcontrollerConfig',
     # CORS
     'corsheaders',
+    # LOCAL HTTPS
+    "django_extensions",
 ]
 
 MIDDLEWARE = [
@@ -139,7 +141,7 @@ SIMPLE_JWT = {
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': False,
     'ALGORITHM': 'HS256',
-    'SIGNING_KEY': SECRET_KEY,
+    # 'SIGNING_KEY': SECRET_KEY,
     'VERIFYING_KEY': None,
     'AUTH_HEADER_TYPES': ('JWT',),
     'USER_ID_FIELD': 'id',
