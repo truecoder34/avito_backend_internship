@@ -8,13 +8,14 @@ from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
 
-#from apps.services.permissions import AdminCreatOrUserRead
-# Create your views here.
+'''
+SERVICE VIEW CLASS
+'''
 class ServiceView(APIView):
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
     #permission_classes = [AdminCreatOrUserRead]
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     '''
         Method to handle requests POST 
@@ -90,3 +91,7 @@ class ServiceView(APIView):
         if _service_serializer.is_valid():
             _service_serializer.save()
             return JsonResponse(_service_serializer.data)
+
+'''
+WALLET VIEW CLASS
+'''

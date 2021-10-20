@@ -1,8 +1,10 @@
 from WalletController.models import Wallet
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
-from .models import CustomUser
 
+from WalletController.serializers import WalletSerializer
+from .models import CustomUser
+import random
 class ExtendedTokenObtainPairSerializer(TokenObtainPairSerializer):
 
     @classmethod
@@ -22,7 +24,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
     phone       = serializers.CharField(max_length=10, help_text='Number without code, 10 symbols', label='Phone')
     class Meta:
         model = CustomUser
-        fields = ('email', 'password', 'username', 'first_name', 'last_name', 'phone')
+        fields = ('email', 'password', 'username', 'first_name', 'last_name', 'phone', 'wallets')
         extra_kwargs = {'password': {'write_only': True}}
     
     def validate_first_name(self, value):
@@ -80,11 +82,18 @@ class CustomUserSerializer(serializers.ModelSerializer):
         #instance = self.Meta.model(**validated_data)  # as long as the fields are the same, we can just use this
         if password is not None:
             user_instance.set_password(password)
+
         user_instance.save()
         print("[DEBUG] : New user created {}".format(user_instance))
+
         # TODO : Create here instance of wallet for USER
+        #wallet = WalletSerializer.create(user=user_instance)
         wallet = Wallet.objects.create(user=user_instance)
+        '''TODO : Refacrote number wallet generation and verification that iis is unique'''
+        wallet.number_walet = str(random.randint(100, 10000000000000000000))
         wallet.save()
+        print("[DEBUG] : New wallet created {}".format(wallet))
+
         return user_instance
     
     # TODO : add def upadate(self, instance, validated_data) method tu update users profile
